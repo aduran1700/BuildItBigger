@@ -1,9 +1,10 @@
-package com.udacity.gradle.builditbigger;
+package com.udacity.gradle.builditbigger.free;
 
 import android.content.Context;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.udacity.gradle.builditbigger.R;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.udacity.gradle.builditbigger;
+package com.udacity.gradle.builditbigger.free;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,8 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.aduran.myapplication.backend.myApi.MyApi;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.udacity.gradle.builditbigger.R;
 
 import java.io.IOException;
 
@@ -22,11 +26,33 @@ import app.jokedisplay.JokeActivity;
 
 public class MainActivity extends AppCompatActivity {
     private ProgressDialog dialog;
+    InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+                tellJoke();
+            }
+        });
+
+        requestNewInterstitial();
+    }
+
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        mInterstitialAd.loadAd(adRequest);
     }
 
 
@@ -53,6 +79,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view){
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            tellJoke();
+        }
+    }
+
+    public void tellJoke() {
         dialog = ProgressDialog.show(this, "",
                 "Loading. Please wait...", true);
 
@@ -95,6 +129,4 @@ public class MainActivity extends AppCompatActivity {
             dialog.dismiss();
         }
     }
-
-
 }
