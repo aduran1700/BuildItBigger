@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void tellJoke() {
         dialog = ProgressDialog.show(this, "",
-                "Loading. Please wait...", true);
+                getString(com.udacity.gradle.builditbigger.R.string.loading_text), true);
 
         new EndpointsAsyncTask().execute(new Pair<Context, ProgressDialog>(this, dialog));
     }
